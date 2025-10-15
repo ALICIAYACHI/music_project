@@ -1,12 +1,15 @@
 """
 Django settings for music_project project.
-Adaptado para funcionar localmente (MySQL) y en Render (PostgreSQL).
+Configurado para funcionar localmente (MySQL) y en Render (PostgreSQL).
 """
 
 from pathlib import Path
 import os
 import dj_database_url  # para producción en Render
 
+# -----------------------------
+# RUTAS BASE
+# -----------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -----------------------------
@@ -15,11 +18,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temporal')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'music-project.onrender.com', '.onrender.com']
-CSRF_TRUSTED_ORIGINS = ['https://music-project.onrender.com', 'https://*.onrender.com']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'music-project-u5u6.onrender.com',  # tu dominio en Render
+    '.onrender.com'
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://music-project-u5u6.onrender.com',
+    'https://*.onrender.com'
+]
 
 # -----------------------------
-# APLICACIONES
+# APLICACIONES INSTALADAS
 # -----------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,7 +47,7 @@ INSTALLED_APPS = [
 # -----------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # sirve archivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # para archivos estáticos en Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,7 +68,7 @@ WSGI_APPLICATION = 'music_project.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # carpeta de plantillas global
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,15 +84,16 @@ TEMPLATES = [
 # -----------------------------
 # BASE DE DATOS
 # -----------------------------
-if os.environ.get('RENDER'):  # Si estás en Render.com
+# Si Render define DATABASE_URL, usamos PostgreSQL. Si no, usamos MySQL local.
+if os.environ.get('DATABASE_URL'):
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+            default=os.environ['DATABASE_URL'],
             conn_max_age=600,
             ssl_require=True
         )
     }
-else:  # Local (MySQL)
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -94,7 +106,7 @@ else:  # Local (MySQL)
     }
 
 # -----------------------------
-# VALIDACIÓN DE CONTRASEÑAS
+# VALIDADORES DE CONTRASEÑAS
 # -----------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -116,14 +128,13 @@ USE_TZ = True
 # -----------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
+STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # -----------------------------
-# CONFIG GENERAL
+# CONFIGURACIÓN GENERAL
 # -----------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
