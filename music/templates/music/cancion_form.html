@@ -1,0 +1,15 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.id %}Editar Canción{% else %}Nueva Canción{% endif %}</h2>
+
+    <form method="post" enctype="multipart/form-data" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'lista_canciones' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

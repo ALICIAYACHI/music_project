@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+.env
+
+# Archivos compilados / caché
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de base de datos locales
+*.sqlite3
+*.log
+
+# Archivos estáticos y media generados
+staticfiles/
+media/
+
+# Configuración de entorno o dependencias
+.DS_Store
+*.egg-info/

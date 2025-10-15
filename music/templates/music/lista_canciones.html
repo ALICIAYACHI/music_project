@@ -1,0 +1,28 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Canciones</h1>
+  <a class="btn btn-success" href="{% url 'crear_cancion' %}">➕ Nueva Canción</a>
+</div>
+
+<div class="row">
+  {% for c in canciones %}
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        {% if c.portada %}
+          <img src="{{ c.portada.url }}" class="card-img-top" alt="portada">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ c.titulo }}</h5>
+          <p class="card-text">{{ c.duracion }} — {{ c.album.nombre }}</p>
+          <a href="{% url 'detalle_cancion' c.id %}" class="btn btn-primary btn-sm">Ver</a>
+          <a href="{% url 'editar_cancion' c.id %}" class="btn btn-outline-secondary btn-sm">Editar</a>
+          <a href="{% url 'eliminar_cancion' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No hay canciones aún.</p>
+  {% endfor %}
+</div>
+{% endblock %}

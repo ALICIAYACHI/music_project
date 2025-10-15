@@ -1,0 +1,24 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.pk %}✏️ Editar Álbum{% else %}➕ Nuevo Álbum{% endif %}</h2>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_nombre" class="form-label">Nombre del Álbum</label>
+            {{ form.nombre }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_año" class="form-label">Año</label>
+            {{ form.año }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">💾 Guardar</button>
+        <a href="{% url 'lista_albumnes' %}" class="btn btn-secondary">↩️ Cancelar</a>
+    </form>
+</div>
+{% endblock %}

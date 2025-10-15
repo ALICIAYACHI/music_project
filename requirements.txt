@@ -1,0 +1,19 @@
+# Django y librerías base
+Django>=5.2
+gunicorn
+whitenoise
+dj-database-url
+
+# Conectores de bases de datos
+psycopg2-binary   # para PostgreSQL (Render)
+mysqlclient       # para MySQL local
+PyMySQL
+
+# Otras dependencias comunes
+pillow
+sqlparse
+asgiref
+tzdata
+cryptography
+cffi
+pycparser

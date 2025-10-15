@@ -1,0 +1,16 @@
+{% extends 'music/base.html' %}
+{% block content %}
+<div class="card mx-auto mt-5 p-4 shadow-sm" style="max-width: 500px;">
+  <h4 class="mb-3 text-center">¿Seguro que deseas eliminar esta canción?</h4>
+  <p class="text-center">
+    <strong>{{ cancion.titulo }}</strong><br>
+    {{ cancion.album.nombre }} ({{ cancion.album.año }})
+  </p>
+
+  <form method="POST" class="text-center mt-4">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger me-2">Sí, eliminar</button>
+    <a href="{% url 'lista_canciones' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
